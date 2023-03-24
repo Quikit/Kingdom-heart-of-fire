@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5854407356869411020}
   - component: {fileID: 5854407356869411021}
   - component: {fileID: 5854407356869411025}
-  - component: {fileID: 5854407356869411024}
   m_Layer: 3
   m_Name: NPC
   m_TagString: Untagged
@@ -155,17 +154,4 @@ MonoBehaviour:
   extractWood: 0
   extractStone: 0
   extractionRange: 0.2
---- !u!114 &5854407356869411024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5735565670503176429}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5e0fdf16eaec3e49a4478f4d0e2a687, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NPCState: {fileID: 0}
-  TriggerMenuRendering: 100
+  timeOfDestroy: 0

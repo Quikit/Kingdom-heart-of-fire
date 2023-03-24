@@ -8,10 +8,6 @@ public class Resource : MonoBehaviour
     public int minVal;
     public int maxVal;
 
-    void Start()
-    {
-        
-    }
     public int destroyWithTime(float despawnTime)
     {
          Destroy(gameObject, despawnTime);

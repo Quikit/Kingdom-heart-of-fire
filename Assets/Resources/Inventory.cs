@@ -5,7 +5,6 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public int GoldCount { get; private set; }
-
     public int WoodCount { get; private set; }
     public int StoneCount { get; private set; }
     public static Inventory Instance { get; private set; }

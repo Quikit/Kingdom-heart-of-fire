@@ -6,9 +6,10 @@ public class NPCController : NPCCharacter
 {
     public bool extractWood;
     public bool extractStone;
-    private bool extractComplete;
     public float extractionRange;
     public float timeOfDestroy;
+
+    private bool extractComplete;
     void Start()
     {
         numberOfResources = 0;
@@ -90,5 +91,13 @@ public class NPCController : NPCCharacter
         if(!extractWood && !extractStone){
             target = null;
         }
+    }
+
+    public void dropTargetAll()
+    {
+        extractWood = false;
+        extractStone = false;
+        extractComplete = false;
+        target = null;
     }
 }

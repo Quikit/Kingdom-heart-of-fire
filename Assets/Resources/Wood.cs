@@ -15,5 +15,6 @@ public class Wood : Resource, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         woodPanel.showMenu(!woodPanel.getActive());
+        woodPanel.woodTarget = gameObject;
     }
 }

@@ -43,4 +43,48 @@ public class NPCCharacter : MonoBehaviour
         }
         return NearestTarget;
     }
+
+    public static GameObject getNearestNPCByTarget(GameObject target)
+    {
+        Transform targetPostiton = target.transform;
+        GameObject[] NPCs = GameObject.FindGameObjectsWithTag("WorkerNPC");
+        if (NPCs.Length == 0)
+        {
+            return null;
+        }
+        GameObject NearestNPC = NPCs[0];
+        foreach (GameObject NPC in NPCs)
+        {
+            float DistanceNearest = Mathf.Abs(targetPostiton.transform.position.x - NearestNPC.transform.position.x);
+            float DistanceNextNearest = Mathf.Abs(targetPostiton.transform.position.x - NPC.transform.position.x);
+            if (DistanceNearest > DistanceNextNearest)
+            {
+                NearestNPC = NPC;
+            }
+        }
+        return NearestNPC;
+    }
+    public static GameObject getNPCByTargetPosition(GameObject target)
+    {
+        GameObject[] NPCs = GameObject.FindGameObjectsWithTag("WorkerNPC");
+        if (NPCs.Length == 0)
+        {
+            return null;
+        }
+        foreach (GameObject NPC in NPCs)
+        {
+            GameObject NPCTarget = NPC.GetComponent<NPCController>().target;
+
+            if (NPCTarget != null)
+            {
+                float targetX = target.transform.position.x;
+                float targetY = target.transform.position.y;
+                if (targetX == NPCTarget.transform.position.x && targetY == NPCTarget.transform.position.y)
+                {
+                    return NPC;
+                }
+            }
+        }
+        return null;
+    }
 }

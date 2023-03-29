@@ -100,7 +100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minVal: 3
   maxVal: 3
-  woodPanel: {fileID: 328363078270378897, guid: 57382496dfee96240907457a376a7d9c, type: 3}
 --- !u!61 &-4024844939909985342
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -114,7 +113,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 2.140625}
+  m_Offset: {x: -0.22713357, y: 2.034629}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -125,5 +124,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.75, y: 4.28125}
+  m_Size: {x: 0.6609794, y: 4.069258}
   m_EdgeRadius: 0

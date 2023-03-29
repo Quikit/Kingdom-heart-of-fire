@@ -6,7 +6,6 @@ public class NPCCharacter : MonoBehaviour
 {
     public float speed;
     public int despawnTime;
-    public GameObject target;
     public GameObject fire;
     public bool skinLookRight;
     protected GameObject storage;
@@ -64,27 +63,27 @@ public class NPCCharacter : MonoBehaviour
         }
         return NearestNPC;
     }
-    public static GameObject getNPCByTargetPosition(GameObject target)
-    {
-        GameObject[] NPCs = GameObject.FindGameObjectsWithTag("WorkerNPC");
-        if (NPCs.Length == 0)
-        {
-            return null;
-        }
-        foreach (GameObject NPC in NPCs)
-        {
-            GameObject NPCTarget = NPC.GetComponent<NPCController>().target;
-
-            if (NPCTarget != null)
-            {
-                float targetX = target.transform.position.x;
-                float targetY = target.transform.position.y;
-                if (targetX == NPCTarget.transform.position.x && targetY == NPCTarget.transform.position.y)
-                {
-                    return NPC;
-                }
-            }
-        }
-        return null;
-    }
+    //public static GameObject getNPCByTargetPosition(GameObject target)
+    //{
+    //    GameObject[] NPCs = GameObject.FindGameObjectsWithTag("WorkerNPC");
+     //   if (NPCs.Length == 0)
+    //    {
+    //        return null;
+    //    }
+     //   foreach (GameObject NPC in NPCs)
+      //  {
+      //      GameObject NPCTarget = NPC.GetComponent<NPCController>().target;
+    //
+      //      if (NPCTarget != null)
+       //     {
+      ////          float targetX = target.transform.position.x;
+     ///           float targetY = target.transform.position.y;
+        //        if (targetX == NPCTarget.transform.position.x && targetY == NPCTarget.transform.position.y)
+        //        {
+       //             return NPC;
+       //         }
+       //     }
+       // }
+      //  return null;
+   // }
 }

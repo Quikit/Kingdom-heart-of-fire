@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class NPCController : NPCCharacter
@@ -8,11 +9,14 @@ public class NPCController : NPCCharacter
     public bool extractStone;
     public float extractionRange;
     public float timeOfDestroy;
-
     private bool extractComplete;
+
+    private Queue<GameObject> targets;
+    private GameObject currentTarget;
     void Start()
     {
         numberOfResources = 0;
+        targets = new Queue<GameObject>();
         storage = GameObject.FindGameObjectWithTag("Storage");
         flippedSkin();
     }
@@ -25,29 +29,49 @@ public class NPCController : NPCCharacter
 
     void setTarget()
     {
-        if(target == null)
+        if(targets.Count == 0 && currentTarget == null)
         {
             if(extractWood)
             {
-                target = getNearestTargetByTag("Wood");
+                targets.Enqueue(getNearestTargetByTag("Wood"));
             }
-            else if(extractStone)
+            if(extractStone)
             {
-                target = getNearestTargetByTag("Stone");
+                targets.Enqueue(getNearestTargetByTag("Stone"));
+            }
+        } else if (targets.Count != 0 && currentTarget == null)
+        {
+            GameObject target = targets.Dequeue();
+            if (target.GetComponent<Resource>().getMark())
+            {
+                checkExtractTag(target);
+                currentTarget = target;
+            }
+            
+        }
+        if (currentTarget != null)
+        {
+            if (!currentTarget.GetComponent<Resource>().getMark())
+            {
+                currentTarget = null;
             }
         }
-        dropTarger();
     }
 
     void move()
     {
-        if(target != null && !extractComplete)
+        if (currentTarget != null && !extractComplete)
         {
-            if(Mathf.Abs(transform.position.x - target.transform.position.x) > extractionRange) {
-                transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-            } else {
+            if (Mathf.Abs(transform.position.x - currentTarget.transform.position.x) > extractionRange)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, currentTarget.transform.position, speed * Time.deltaTime);
+            }
+            else
+            {
+                checkExtractTag(currentTarget);
                 job();
             }
+            
         } else {
             goToStorage();
         }
@@ -56,14 +80,15 @@ public class NPCController : NPCCharacter
     void job()
     {
         if(extractWood){
-            numberOfResources = target.gameObject.GetComponent<Wood>().destroyWithTime(timeOfDestroy);
-            extractComplete = true;
+            numberOfResources = currentTarget.gameObject.GetComponent<Wood>().destroyWithTime(timeOfDestroy);
+            extractWood = false;
         }
         if(extractStone){
-            numberOfResources = target.gameObject.GetComponent<Stone>().destroyWithTime(timeOfDestroy);
-            extractComplete = true;
+            numberOfResources = currentTarget.gameObject.GetComponent<Stone>().destroyWithTime(timeOfDestroy);
+            extractStone = false;
         }
-        Debug.Log(numberOfResources);
+        currentTarget = null;
+        extractComplete = true;
     }
 
     void goToStorage()
@@ -86,18 +111,22 @@ public class NPCController : NPCCharacter
         }
     }
 
-    void dropTarger()
+    public void addTarget(GameObject target)
     {
-        if(!extractWood && !extractStone){
-            target = null;
-        }
+        targets.Enqueue(target);
     }
-
-    public void dropTargetAll()
+    public Queue<GameObject> getTargets()
     {
-        extractWood = false;
-        extractStone = false;
-        extractComplete = false;
-        target = null;
+        return targets;
+    }
+    private void checkExtractTag(GameObject target)
+    {
+        string tag = target.tag;
+        if(tag == "Wood") {
+            extractWood = true;
+        }
+        if (tag == "Stone"){
+            extractStone = true;
+        }
     }
 }

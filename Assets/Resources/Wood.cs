@@ -1,20 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.EventSystems;
 using UnityEngine.EventSystems;
 
 public class Wood : Resource, IPointerClickHandler
 {
-    private WoodPanel woodPanel;
+    private ResourcePanel resourcePanel;
     void Start()
     {
         GameObject ui = GameObject.FindGameObjectWithTag("UI");
-        woodPanel = ui.GetComponent<WoodPanel>();
+        resourcePanel = ui.GetComponent<ResourcePanel>();
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        woodPanel.showMenu(!woodPanel.getActive());
-        woodPanel.woodTarget = gameObject;
+        if (resourcePanel.resourceTarget == gameObject && resourcePanel.getActive() == true)
+        {
+            resourcePanel.showMenu(false);
+        } 
+        else
+        {
+            resourcePanel.showMenu(true);
+            resourcePanel.resourceTarget = gameObject;
+            resourcePanel.resourceTag = gameObject.tag;
+        }
     }
 }

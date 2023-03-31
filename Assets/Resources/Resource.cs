@@ -11,9 +11,9 @@ public class Resource : MonoBehaviour
 
     public int destroyWithTime(float despawnTime)
     {
-         activeMark = false;
-         Destroy(gameObject, despawnTime);
-         return Random.Range(minVal, maxVal);
+        activeMark = false;
+        Destroy(gameObject, despawnTime);
+        return Random.Range(minVal, maxVal);
     }
 
     public void setMark(bool flag)

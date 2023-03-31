@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ResourcePanel : MonoBehaviour
@@ -11,6 +12,13 @@ public class ResourcePanel : MonoBehaviour
     public void Start()
     {
         showMenu(false);
+    }
+    public void Update()
+    {
+        if(resourceTarget == null)
+        {
+            showMenu(false);
+        }
     }
     public void showMenu(bool flag){
        if (resourcePanel != null)

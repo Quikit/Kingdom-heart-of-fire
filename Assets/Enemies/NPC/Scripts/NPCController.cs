@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -29,8 +30,8 @@ public class NPCController : NPCCharacter
 
     void setTarget()
     {
-        if(targets.Count == 0 && currentTarget == null)
-        {
+         /*if(targets.Count == 0 && currentTarget == null)
+         {
             if(extractWood)
             {
                 targets.Enqueue(getNearestTargetByTag("Wood"));
@@ -39,22 +40,20 @@ public class NPCController : NPCCharacter
             {
                 targets.Enqueue(getNearestTargetByTag("Stone"));
             }
-        } else if (targets.Count != 0 && currentTarget == null)
+        }*/
+        if (targets.Count != 0 && currentTarget == null)
         {
-            GameObject target = targets.Dequeue();
-            if (target.GetComponent<Resource>().getMark())
+            GameObject target = targets.Peek();
+            if (!target.IsDestroyed() && target.GetComponent<Resource>().getMark())
             {
-                checkExtractTag(target);
                 currentTarget = target;
             }
             
         }
-        if (currentTarget != null)
+        if (currentTarget != null && !currentTarget.GetComponent<Resource>().getMark())
         {
-            if (!currentTarget.GetComponent<Resource>().getMark())
-            {
-                currentTarget = null;
-            }
+            currentTarget = null;
+            targets.Dequeue();
         }
     }
 
@@ -81,13 +80,10 @@ public class NPCController : NPCCharacter
     {
         if(extractWood){
             numberOfResources = currentTarget.gameObject.GetComponent<Wood>().destroyWithTime(timeOfDestroy);
-            extractWood = false;
         }
         if(extractStone){
             numberOfResources = currentTarget.gameObject.GetComponent<Stone>().destroyWithTime(timeOfDestroy);
-            extractStone = false;
         }
-        currentTarget = null;
         extractComplete = true;
     }
 
@@ -100,12 +96,17 @@ public class NPCController : NPCCharacter
                 if(extractWood){
                     Inventory.Instance.AddWood(numberOfResources);
                     numberOfResources = 0;
+                    extractWood = false;
                     extractComplete = false;
-                }
-                if(extractStone){
+                    currentTarget = null;
+                    targets.Dequeue();
+                } else if(extractStone){
                     Inventory.Instance.AddStone(numberOfResources);
                     numberOfResources = 0;
+                    extractStone = false;
                     extractComplete = false;
+                    currentTarget = null;
+                    targets.Dequeue();
                 }
             }
         }

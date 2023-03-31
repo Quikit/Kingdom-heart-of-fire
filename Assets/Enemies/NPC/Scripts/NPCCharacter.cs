@@ -51,17 +51,46 @@ public class NPCCharacter : MonoBehaviour
         {
             return null;
         }
-        GameObject NearestNPC = NPCs[0];
+        ArrayList ListNPCWitoutJob = new ArrayList();
+        // Поиск всех безработных NPC
         foreach (GameObject NPC in NPCs)
         {
-            float DistanceNearest = Mathf.Abs(targetPostiton.transform.position.x - NearestNPC.transform.position.x);
-            float DistanceNextNearest = Mathf.Abs(targetPostiton.transform.position.x - NPC.transform.position.x);
-            if (DistanceNearest > DistanceNextNearest)
+            NPCController NPCController = NPC.GetComponent<NPCController>();
+            if(NPCController.getTargets().Count == 0)
             {
-                NearestNPC = NPC;
+                ListNPCWitoutJob.Add(NPC);
             }
         }
-        return NearestNPC;
+        // Выбор пближайшего безработного NPC
+        if (ListNPCWitoutJob.Count != 0)
+        {
+            GameObject NearestNPCWitoutJob = (GameObject)ListNPCWitoutJob[0];
+            foreach (GameObject NPCWitoutJob in ListNPCWitoutJob)
+            {
+                float DistanceNearest = Mathf.Abs(targetPostiton.transform.position.x - NearestNPCWitoutJob.transform.position.x);
+                float DistanceNextNearest = Mathf.Abs(targetPostiton.transform.position.x - NPCWitoutJob.transform.position.x);
+                if (DistanceNearest > DistanceNextNearest)
+                {
+                    NearestNPCWitoutJob = NPCWitoutJob;
+                }
+            }
+            return NearestNPCWitoutJob;
+        } else {
+        // Выбор NPC с наименьшей загруженностью
+            GameObject NearestNPC = NPCs[0];
+            foreach (GameObject NPC in NPCs)
+            {
+                NPCController NearestNPCController = NearestNPC.GetComponent<NPCController>();
+                NPCController NextNPCController = NPC.GetComponent<NPCController>();
+                float DistanceNearest = Mathf.Abs(targetPostiton.transform.position.x - NearestNPC.transform.position.x);
+                float DistanceNextNearest = Mathf.Abs(targetPostiton.transform.position.x - NPC.transform.position.x);
+                if (NextNPCController.getTargets().Count <= NearestNPCController.getTargets().Count)
+                {
+                    NearestNPC = NPC;
+                }
+            }
+            return NearestNPC;
+        }
     }
     //public static GameObject getNPCByTargetPosition(GameObject target)
     //{

@@ -19,13 +19,16 @@ public class NPCController : NPCCharacter
         numberOfResources = 0;
         targets = new Queue<GameObject>();
         storage = GameObject.FindGameObjectWithTag("Storage");
+        calmStateController = GameObject.FindGameObjectWithTag("CalmController").GetComponent<CalmStateController>();
         flippedSkin();
     }
 
     void Update()
     {
-       setTarget();
-       move();
+        setTarget();
+        move();
+        setState();
+        stateController();
     }
 
     void setTarget()
@@ -54,6 +57,52 @@ public class NPCController : NPCCharacter
         {
             currentTarget = null;
             targets.Dequeue();
+        }
+    }
+    private void setState()
+    {
+       if(targets.Count == 0 && currentTarget == null && calmState == false)
+       {
+            calmState = true;
+            calmStateTargetComplete = false;
+            calmStateController.updateCalmLabel();
+            calmRandomPosition = Random.Range(calmStateController.getLeftCalmLabel().transform.position.x, calmStateController.getRightCalmLabel().transform.position.x);
+       } 
+       else if (targets.Count != 0 || currentTarget != null)
+       {
+            calmState = false;
+       }
+    }
+    private void stateController()
+    {
+        if (calmState)
+        {
+            if (!calmStateTargetComplete && Mathf.Abs(transform.position.x - calmRandomPosition) > extractionRange)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, new Vector2(calmRandomPosition, 0), lowSpeed * Time.deltaTime);
+            } 
+            else if(!calmStateTargetComplete) 
+            {
+                calmStateTargetComplete = true;
+                if(sleepCalmTimer <= 0)
+                {
+                    sleepCalmTimer = Random.Range(0, MaxSleepCalmTimer);
+                } 
+            }
+            if (calmStateTargetComplete)
+            {
+                if (sleepCalmTimer > 0)
+                {
+                    sleepCalmTimer -= Time.deltaTime;
+                    Debug.Log("timer:" + sleepCalmTimer + " deltaTime:" + Time.deltaTime);
+                } 
+                else
+                {
+                    calmStateTargetComplete = false;
+                    calmStateController.updateCalmLabel();
+                    calmRandomPosition = Random.Range(calmStateController.getLeftCalmLabel().transform.position.x, calmStateController.getRightCalmLabel().transform.position.x);
+                }
+            }
         }
     }
 

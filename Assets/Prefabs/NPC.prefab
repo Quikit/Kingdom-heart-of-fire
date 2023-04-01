@@ -147,10 +147,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  lowSpeed: 0.5
   despawnTime: 0
-  target: {fileID: 0}
   fire: {fileID: 6461132631308750279, guid: 454c6463825282c4e8ea01856f0a9e8c, type: 3}
   skinLookRight: 0
+  MaxSleepCalmTimer: 30
   extractWood: 0
   extractStone: 0
   extractionRange: 0.2

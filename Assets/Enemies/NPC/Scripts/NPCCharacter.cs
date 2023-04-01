@@ -5,11 +5,19 @@ using UnityEngine;
 public class NPCCharacter : MonoBehaviour
 {
     public float speed;
+    public float lowSpeed;
     public int despawnTime;
     public GameObject fire;
     public bool skinLookRight;
     protected GameObject storage;
     protected int numberOfResources;
+
+    public float MaxSleepCalmTimer;
+    protected float sleepCalmTimer;
+    protected bool calmStateTargetComplete;
+    protected bool calmState;
+    protected float calmRandomPosition;
+    protected CalmStateController calmStateController;
 
     public void flippedSkin(){
         if(gameObject.transform.position.x < fire.transform.position.x && !skinLookRight ||

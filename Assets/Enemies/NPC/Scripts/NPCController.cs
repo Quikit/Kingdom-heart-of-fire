@@ -94,7 +94,6 @@ public class NPCController : NPCCharacter
                 if (sleepCalmTimer > 0)
                 {
                     sleepCalmTimer -= Time.deltaTime;
-                    Debug.Log("timer:" + sleepCalmTimer + " deltaTime:" + Time.deltaTime);
                 } 
                 else
                 {
